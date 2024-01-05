@@ -671,16 +671,8 @@ class SuperviseAndProxyHandler(LocalProxyHandler):
 
     @property
     def port(self):
-        """
-        Allocate either the requested port or a random empty port for use by
-        application
-        """
-        if 'port' not in self.state:
-            sock = socket.socket()
-            sock.bind(('', self.requested_port))
-            self.state['port'] = sock.getsockname()[1]
-            sock.close()
-        return self.state['port']
+        # Don't check if the port is available by binding to it.
+        return self.requested_port
 
     def get_cwd(self):
         """Get the current working directory for our process
