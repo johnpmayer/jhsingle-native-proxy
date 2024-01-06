@@ -118,6 +118,7 @@ class ProxyHandler(HubOAuthenticated, WebSocketHandlerMixin):
         self.settings['api_last_activity'] = datetime.utcnow()
 
     def _get_context_path(self, port):
+        return self.base_url
         """
         Some applications need to know where they are being proxied from.
         This is either:
@@ -125,12 +126,12 @@ class ProxyHandler(HubOAuthenticated, WebSocketHandlerMixin):
         - {base_url}/proxy/absolute/{port}
         - {base_url}/{proxy_base}
         """
-        if self.proxy_base:
-            return url_path_join(self.base_url, self.proxy_base)
-        if self.absolute_url:
-            return url_path_join(self.base_url, 'proxy', 'absolute', str(port))
-        else:
-            return url_path_join(self.base_url, 'proxy', str(port))
+        # if self.proxy_base:
+        #     return url_path_join(self.base_url, self.proxy_base)
+        # if self.absolute_url:
+        #     return url_path_join(self.base_url, 'proxy', 'absolute', str(port))
+        # else:
+        #     return url_path_join(self.base_url, 'proxy', str(port))
 
     def get_client_uri(self, protocol, host, port, proxied_path, get_args=None):
         context_path = self._get_context_path(port)
@@ -884,7 +885,7 @@ def _make_serverproxy_handler(name, command, environment, absolute_url, port, re
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.name = name
-            self.proxy_base = name
+            self.proxy_base = ''
             self.absolute_url = absolute_url
             self.requested_port = port
             self.mappath = mappath
