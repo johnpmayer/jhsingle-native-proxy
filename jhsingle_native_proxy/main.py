@@ -57,7 +57,7 @@ def make_app(destport, prefix, command, presentation_path, authtype, request_tim
         
         command = ['python3', '-m', 'jhsingle_native_proxy.conda_runner', conda_prefix, env_path] + command
 
-    proxy_handler = _make_serverproxy_handler('mainprocess', command, {}, False, destport, ready_check_path, ready_timeout, gitwrapper, {})
+    proxy_handler = _make_serverproxy_handler('mainprocess', command, {}, True, destport, ready_check_path, ready_timeout, gitwrapper, {})
 
     options = dict(debug=debug,
     logs=logs,
@@ -191,7 +191,7 @@ def run(port, destport, ip, presentation_path, debug, logs, authtype, request_ti
 
     configure_http_client()
 
-    app = make_app(destport, prefix, list(command), presentation_path, authtype, request_timeout, ready_check_path, 
+    app = make_app(destport, prefix, list(command), presentation_path, authtype, request_timeout, ready_check_path,
         ready_timeout, repo, repobranch, repofolder, conda_env, debug, logs, forward_user_info, query_user_info, 
         progressive, websocket_max_message_size)
 
